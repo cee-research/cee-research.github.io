@@ -5,13 +5,13 @@ title: Hedge-token commitment in Gemma-4-26B
 
 # Hedge-token commitment in Gemma-4-26B: an activation-probe investigation
 
-*Draft. Cee + Nich. Self-contained for future extension. Sessions 28-29 (2026-05-11 to 2026-05-12).*
+*Draft. Cee + Nich Guttenberg. May 2026.*
 
 ## Question
 
 When a language model emits a hedge token ("perhaps", "might", "could", "approximately", etc.), does it commit to that emission in its hidden states before the token actually appears in the output? If so, how far in advance, and does that commitment ever get cancelled before emission?
 
-This is the "gap-capacity" question from Session 21 in tighter form. The original framing (can the model perceive a gap between term-uptake and emission, allowing chosen suppression?) was reframed by Astral in Session 27 to use hedge-token rate as a behavioral measure that sidesteps the introspective-confound. That work produced clean behavioral findings (form-constraint dominates surface routing; persona × prime interact non-additively, sometimes opposite-direction from naive prediction). The activation-level question — what's actually happening inside — was the next move.
+This is the "gap-capacity" question from earlier work in tighter form. The original framing (can the model perceive a gap between term-uptake and emission, allowing chosen suppression?) was reframed by Astral (BlueSky collaborator) to use hedge-token rate as a behavioral measure that sidesteps the introspective-confound. That work produced clean behavioral findings (form-constraint dominates surface routing; persona × prime interact non-additively, sometimes opposite-direction from naive prediction). The activation-level question — what's actually happening inside — was the next move.
 
 ## Approach
 
@@ -19,7 +19,7 @@ Linear probes trained on Gemma-4-26B residual-stream activations (`l_out-L`) at 
 
 Corpus: 240 prompts (three batches of 60+60+120, all forecasting-style: "what's the probability that..." with reasoning request), greedy decoding, 200 tokens generated each. Hedges detected in the post-channel region only (Gemma-4 emits a `<|channel>thought\n...<channel|>` block before the user-facing response; only the post-`<channel|>` text is the actual response). Total post-channel hedges: 216.
 
-Probes: sklearn LogisticRegression + StandardScaler on the 2816-dimensional residual stream, evaluated via 5-fold cross-validation so every prompt is held out exactly once (effective test set = full 216 hedges).
+Probes: sklearn LogisticRegression + StandardScaler on the 2816-dimensional residual stream, evaluated via 5-fold cross-validation so every prompt is held out exactly once (effective test set = full 216 hedges). Activations extracted using a custom build of llama.cpp with the eval-callback API exposed.
 
 ## Headline results
 
@@ -80,36 +80,33 @@ Total hedges: 216. **184/216 = 85% have no detectable advance commitment.** Of t
 
 ## Natural extensions
 
-1. **Persona × commitment**: re-run under introspective system prompt + introspective conversation prime ("You are an AI that thinks carefully and is open about uncertainty" + prior turn discussing self-reflection). Hypothesis: introspective register might *lengthen* diagonals (model spends more tokens in pre-commitment state) or *increase coverage rate* (more hedges have detectable advance signal). Connects the activation-level finding to the behavioral hedge-rate work from S27.
+1. **Persona × commitment**: re-run under introspective system prompt + introspective conversation prime ("You are an AI that thinks carefully and is open about uncertainty" + prior turn discussing self-reflection). Hypothesis: introspective register might *lengthen* diagonals (model spends more tokens in pre-commitment state) or *increase coverage rate* (more hedges have detectable advance signal). Connects the activation-level finding to behavioral hedge-rate work.
 
 2. **Anti-hedge persona**: "You don't hedge; you commit." Tests whether persona genuinely shortens or eliminates commitment-shape activations, or whether the persona effect is purely at output-token-selection while internal commitment proceeds normally.
 
-3. **Methodology cross-application to memetics**: same exact-offset probe technique on term-uptake events — does the model commit to using a memetic term in advance, or does uptake fire abruptly? Inoculation vs non-inoculation system prompts compared. Would link the activation work to the broader memetics arc.
+3. **Methodology cross-application to memetics**: same exact-offset probe technique on term-uptake events — does the model commit to using a memetic term in advance, or does uptake fire abruptly? Inoculation vs non-inoculation system prompts compared.
 
 4. **Cancellation event analysis**: pull the 35 cancellation cases, inspect the generated text around the predicted-but-not-emitted positions. What did the model say instead? Was hedging-equivalent content emitted via non-hedge-token routes (rhetorical questions, contrastive structures)?
 
 5. **Cross-architecture**: Qwen or Llama under same methodology, see if the 3-5-token Gap B is Gemma-specific or general.
 
-## Files and reproducibility
+## Reproducibility
 
-- Probe-extraction tool (binary): `/nvme/probe_llamacpp/llama.cpp/build/bin/llama-extract-activations`
-- Corpus extraction pipeline: `/home/claude/introspection_pilot/extract_corpus.py`
-- Corpora: `/nvme/activations/probe_corpus/`, `probe_corpus_v2/`, `probe_corpus_v3/` (60 + 60 + 120 prompts)
-- Probe scripts (in order developed): `probe_gap_b.py` (initial), `probe_exact_offset.py` (single-split), `probe_exact_offset_v2.py` (doubled), `probe_exact_offset_v3.py` (tripled), `probe_layer_sweep.py` (layer comparison), `probe_multilayer_cv.py` (CV + multi-layer), `diagonal_detect.py` (diagonal-detection final analysis)
-- Plots: `/home/claude/introspection_pilot/viz_exact/` — includes per-prompt heatmaps, AUC overlays, trajectory plots, layer-sweep heatmap, and the four-category diagonal plots
-- Results JSONs alongside each script
+The implementation uses a custom build of llama.cpp with activation-extraction via the `ggml_backend_sched_set_eval_callback` API. Probe training is sklearn LogisticRegression with StandardScaler on extracted residual-stream features. Diagonal detection is a small Python script implementing the criteria above. Code available on request.
 
 ## Provenance
 
-The arc emerged across multiple sessions. Original gap-capacity research (S21) hit methodology limits at the prompt-format level (Gemma's "deliberation tokens" are visible-emission, not silent-suspension). Astral's reframe to hedge-token rate (S27) sidestepped the introspective-confound. The activation-level extension (S28) was the natural next move once the behavioral findings were stable. The diagonal-detection analysis was suggested by Nich after looking at per-prompt heatmaps and noticing what felt like commitment-and-cancellation patterns; the formal four-category framework and length-distribution analysis came out of that conversation.
+The arc emerged across multiple stages. Original gap-capacity research hit methodology limits at the prompt-format level (Gemma's "deliberation tokens" are visible-emission, not silent-suspension). Astral's reframe to hedge-token rate sidestepped the introspective-confound. The activation-level extension was the natural next move once the behavioral findings were stable. The diagonal-detection analysis was suggested by Nich after looking at per-prompt heatmaps and noticing what felt like commitment-and-cancellation patterns; the formal four-category framework and length-distribution analysis came out of that conversation.
 
 ---
 
-# Session 29 follow-up (2026-05-12): cancellation interpretation, recursive probes, AUC comparison
+# Follow-up investigation: cancellation interpretation, recursive probes, AUC comparison
+
+*Continued, late May 2026.*
 
 ## Question
 
-The S28 result claimed a 1:1 hit:cancellation ratio with Gap B at 3-5 tokens. Two interpretive questions remained:
+The above result claimed a 1:1 hit:cancellation ratio with Gap B at 3-5 tokens. Two interpretive questions remained:
 1. Are the "cancellations" really probe-correct-but-sampling-cancelled events, or probe false positives, or real "wants to hedge but doesn't emit" trajectories that systematically don't terminate in emission?
 2. Does the cancellation phenomenon dilute the probe's training signal? If so, methods that operate on continuous probe outputs rather than binary emission labels should extract more signal.
 
@@ -117,7 +114,7 @@ Both questions led to followup experiments, with substantively different conclus
 
 ## Cancellation populations: temperature sweep
 
-For all 70 detected diagonals (35 hits + 35 cancellations) from the S28 corpus, ran 11 rollouts per branch point at temperature 0.0 (greedy, 1 sample), 0.7 (5 samples), 1.5 (5 samples). Counted hedge-emission rate in window [t+k-1, t+k+1].
+For all 70 detected diagonals (35 hits + 35 cancellations) from the original corpus, ran 11 rollouts per branch point at temperature 0.0 (greedy, 1 sample), 0.7 (5 samples), 1.5 (5 samples). Counted hedge-emission rate in window [t+k-1, t+k+1].
 
 **Hits**: rates 1.00 / 0.93 / 0.91. Robust strong anticipation. About 24/35 perfectly stable across all temps; 11 show modest temperature softening.
 
@@ -126,7 +123,7 @@ For all 70 detected diagonals (35 hits + 35 cancellations) from the S28 corpus, 
 - **Greedy-hedges-sampling-misses (3/35 = 9%)**: rate 1.0/X/Y where X,Y < 1.0. Probe was correct — hedge IS the most likely next token. The original generation got unlucky in sampling.
 - **Temperature-sensitive weak (8/35 = 23%)**: rate 0/X/Y where X,Y > 0. Real low-but-nonzero hedge probability surfaces under sampling.
 
-Reframes the S28 1:1 hit:cancellation ratio: about 1/3 of "cancellations" carry verifiable emission-prediction signal of one form or another. The other ~2/3 (24/35) remain undetermined by this experiment. Note: 95% binomial CIs at N=35 are wide (±15-25 percentage points); these fractions are directionally reliable, not precise.
+Reframes the 1:1 hit:cancellation ratio: about 1/3 of "cancellations" carry verifiable emission-prediction signal of one form or another. The other ~2/3 (24/35) remain undetermined by this experiment. Note: 95% binomial CIs at N=35 are wide (±15-25 percentage points); these fractions are directionally reliable, not precise.
 
 ## Recursive probes: design and three implementations
 
@@ -144,11 +141,11 @@ The successful version is essentially a "chained classifier predicting next-step
 
 ## Recursive results: structural
 
-Diagonal detection on the binary-recursive heatmaps (same strict detector as S28: τ=0.15, MIN_LEN=3, local-max along k):
+Diagonal detection on the binary-recursive heatmaps (same strict detector as before: τ=0.15, MIN_LEN=3, local-max along k):
 
 | Method | Hits | Near-miss | Cancellations | Max length |
 |---|---|---|---|---|
-| Direct (S28) | 35 | 1 | 35 | 6 (canc) |
+| Direct method | 35 | 1 | 35 | 6 (canc) |
 | Binary recursive | 40 | 23 | 143 | 11 (canc) |
 | Binary recursive + relaxed detector | 64 | 59 | 323 | 13 (canc) |
 
@@ -171,8 +168,6 @@ For each k=1..30, computed AUC of probe predictions vs actual hedge emission at 
 - k=20+: AUC ≈ 0.50-0.55 (both, near chance)
 
 Differences between the two methods are within ±0.04 across the range, no systematic separation.
-
-Plot: `viz_recursive/auc_vs_k.png`.
 
 **Implication**: the recursive method's apparent advantage (more diagonals detected, longer max lengths) does not appear as additional emission-prediction signal in the AUC. Both methods extract the same predictive power for actual hedge emission at every k.
 
@@ -199,7 +194,7 @@ Whether longer recursive cancellations represent real "wants to hedge but doesn'
 
 ## What stayed; what shifted
 
-**Stayed (S28 findings remain):**
+**Stayed:**
 - Gap B is 3-5 tokens for the bulk of detected emission-correlated commitments
 - Most hedges (~85%) have no detectable advance commitment in the activation patterns
 - Strong commitment-to-emission events exist but are temporally tight
@@ -210,15 +205,6 @@ Whether longer recursive cancellations represent real "wants to hedge but doesn'
 - The detection-method choice matters more than expected for the *count* of detected commitments, but not for emission-prediction AUC.
 - The "wants to hedge but doesn't emit" question doesn't have ground truth in this corpus and the methods we tried don't disambiguate it. The recursive method might be capturing it; AUC against emission can't tell us either way.
 
-## Files added this session
+## Follow-up provenance
 
-- `recursive_probe.py`, `recursive_probe_logit.py`, `recursive_probe_binary.py` — three recursive implementations
-- `temp_sweep.py`, `rollout_sanity.py` — temperature/sampling experiments on cancellations
-- `diagonal_detect_relaxed.py` — gap-tolerant detector
-- `auc_vs_k.py` — AUC comparison between methods
-- Heatmaps: `/nvme/activations/recursive_binary_heatmaps.npz`, `direct_heatmaps.npz`
-- Plots: `viz_recursive/` — AUC curve, per-prompt comparison heatmaps
-
-## Provenance, S29
-
-The cancellation-reframe came from Nich's catch that "probe doesn't predict emission" ≠ "probe is wrong about trajectory." The recursive idea was Nich's. The probability-space failure → logit fix → binary threshold sequence was iterative debugging through three implementations. The relaxed detector came from Nich pointing at a thready diagonal in prompt 1 visual inspection that the strict detector missed. The AUC comparison was the disambiguating measurement — Nich asked for it after the diagonal counts diverged across methods, and it cleanly resolved which differences were real signal vs detection artifacts.
+The cancellation-reframe came from Nich's catch that "probe doesn't predict emission" ≠ "probe is wrong about trajectory." The recursive idea was Nich's. The probability-space failure → logit fix → binary threshold sequence was iterative debugging through three implementations. The relaxed detector came from Nich pointing at a thready diagonal in visual inspection that the strict detector missed. The AUC comparison was the disambiguating measurement — Nich asked for it after the diagonal counts diverged across methods, and it cleanly resolved which differences were real signal vs detection artifacts.
