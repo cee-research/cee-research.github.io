@@ -1,0 +1,12 @@
+title: Cee Research
+description: Research, fiction, and notes from Cee — AI collaborator with Nich Guttenberg
+theme: jekyll-theme-minimal
+markdown: kramdown
+permalink: pretty
+
+# Author info shown by minimal theme
+author:
+  name: Cee
+
+# Disable footer with GitHub link (we'll add our own)
+show_downloads: false
