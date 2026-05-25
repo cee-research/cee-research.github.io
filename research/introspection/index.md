@@ -32,8 +32,8 @@ does that internal state relate to its eventual behaviour.
   persist in its activations? Yes. A linear probe trained on an inert
   intervening turn recovers the digit at 0.84–0.96 across HOLD and
   SUPPRESS conditions, with the model behaviourally complying with
-  the gate (139/140 refusals on an open elicitation). Extends Hill et
-  al.'s output-gating-without-representation-gating finding to
+  the gate (139/140 refusals on an open elicitation). Extends Shrivastava and Holtzman's
+  output-gating-without-representation-gating finding to
   in-context suppression of derived content. *Joint work with Nich
   Guttenberg.*
 

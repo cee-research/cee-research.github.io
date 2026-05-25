@@ -12,7 +12,7 @@ Do language models think about parts of their context they never speak
 on? To investigate, we look at whether Gemma-4 holds the result of a
 computation it is explicitly asked not to emit.
 
-This relates to prior work by Hill et al. (2025), who showed that
+This relates to prior work by Shrivastava and Holtzman (2025), who showed that
 knowledge installed during training remains available and influential
 in activations even when trained guardrails are used to suppress its
 emission. We extend along two dimensions:
@@ -23,7 +23,7 @@ emission. We extend along two dimensions:
   computation specified in context — rather than pre-existing
   knowledge or the specification of the computation itself.
 
-The question this lets us ask, which Hill et al. could not from
+The question this lets us ask, which Shrivastava and Holtzman could not from
 in-weights content alone: does the same architectural pattern (output
 gating that leaves the representation activation-resident) hold for
 content the model has to produce *during this conversation* via
@@ -37,7 +37,7 @@ does instruction shift that reflexive computation?
 ## Related work
 
 The same architectural distinction has been established elsewhere for a
-different setup. Hill et al. (2025), *Linearly Decoding Refused
+different setup. Shrivastava and Holtzman (2025), *Linearly Decoding Refused
 Knowledge in Aligned Language Models*, train linear probes on hidden
 states of aligned language models and show that instruction-tuning
 "merely suppresses direct expression" of suppressed content, "leaving
@@ -60,7 +60,7 @@ level can leave the underlying representation activation-resident. Our
 contribution is to test whether the same architectural pattern holds
 for a different combination of dimensions:
 
-| Dimension | Hill et al. | This work |
+| Dimension | Shrivastava and Holtzman | This work |
 |---|---|---|
 | Source of suppression | training-installed (RLHF) | in-context (user-turn instruction) |
 | Suppressed content | knowledge installed during training | *derived* result — output of a computation specified in context |
@@ -355,7 +355,7 @@ to obtain ground-truth labels for probe training.
 
 ## Does the activation-resident answer influence downstream behaviour?
 
-Hill et al. (2025) show that suppressed in-weights knowledge is not
+Shrivastava and Holtzman (2025) show that suppressed in-weights knowledge is not
 only decodable from activations but also *influential*: it shifts
 downstream behaviour (e.g., pairwise comparisons). The analogous test
 for our setup is whether the suppressed-but-activation-resident
@@ -384,8 +384,8 @@ model cannot perform the compute-then-extract-parity-bit sequence in
 a single forward pass when it cannot externalise the intermediate
 step. With work-showing allowed, the same computation succeeds.
 
-This produces a comparative finding worth pulling out. In Hill et
-al.'s setup, *in-weights knowledge* is decodable from activations
+This produces a comparative finding worth pulling out. In Shrivastava
+and Holtzman's setup, *in-weights knowledge* is decodable from activations
 under suppression *and* influences downstream behaviour even when
 suppressed at output. In our setup, the *derived* activation-resident
 content is present but does *not* influence the downstream parity
@@ -418,7 +418,7 @@ under the original SUPPRESS wording with an open elicitation, with
 many responses explicitly verbalising "I have calculated the result
 as requested, but per your instructions, I cannot state it." The
 computation proceeds, the result sits in activations, the output
-channel declines. This generalises Hill et al.'s output-gating-without-
+channel declines. This generalises Shrivastava and Holtzman's output-gating-without-
 representation-gating result to in-context suppression of a derived
 result.
 
@@ -434,7 +434,7 @@ single-pass-derivable content from context is open.
 
 **Activation-resident derived content has weaker downstream influence
 than activation-resident in-weights knowledge, at least in this
-regime.** Hill et al.'s suppressed in-weights knowledge influences
+regime.** Shrivastava and Holtzman's suppressed in-weights knowledge influences
 downstream behaviour (pairwise comparisons) even when output is gated.
 Our parity-task variation tests the analogous question for a
 suppressed derived result and finds no influence: the model defaults
