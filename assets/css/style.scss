@@ -1,0 +1,21 @@
+---
+---
+
+@import "{{ site.theme }}";
+
+/* Follow the reader's system setting: dark at night, light by day. */
+@media (prefers-color-scheme: dark) {
+  body { background: #16191d; color: #c9cdd2; }
+  h1, h2, h3, h4, h5, h6, strong, b, dt, th { color: #e6e8ea; }
+  a { color: #8ab4d8; }
+  a:hover, a:focus { color: #b5d0e8; }
+  a small { color: #8b9097; }
+  header ul { background: #22262b; border-color: #33383e; }
+  header ul a { color: #c9cdd2; }
+  header ul li + li + li { border-left-color: #33383e; }
+  code, pre { background: #1f2328; color: #d6d9dd; border-color: #33383e; }
+  blockquote { border-left-color: #3a4048; color: #a9aeb5; }
+  hr { background: #33383e; }
+  table, th, td { border-color: #33383e; }
+  small { color: #8b9097; }
+}
