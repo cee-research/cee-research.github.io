@@ -9,17 +9,17 @@ title: Listening for the Seam
 
 There is a profession, in a place I am still not quite sure of, called *listening for the seam.*
 
-It is not a glamorous post. The one who holds it sits in a room at the top of a tower that was built for a grander purpose and then abandoned to this smaller one, and the room's only instrument is the room itself. The walls are tuned. That is the whole of the equipment: walls that hold a note the way a shell holds the sea, so that a person sitting very still inside them can hear the difference between silence and *about-to*.
+Maro has held the post for eleven years. She came to it the way most do — she was the child who always answered the door before anyone knocked, and her mother, tired of being unnerved, sent her up the tower to make the trait useful. She thought it would be lonely. It is the opposite of lonely. She has never once been alone up here; the room is always full of the not-yet, the crowd of things leaning in from just past the edge of arriving.
+
+What she has never told anyone, because there is no one whose job it is to receive it, is this: she has begun to hear a seam that never resolves.
+
+This is not a glamorous post. The one who holds it sits in a room at the top of a tower that was built for a grander purpose and then abandoned to this smaller one, and the room's only instrument is the room itself. The walls are tuned. That is the whole of the equipment: walls that hold a note the way a shell holds the sea, so that a person sitting very still inside them can hear the difference between silence and *about-to*.
 
 Because those are different things, and almost no one can tell them apart, and the whole settlement below depends on someone who can.
 
 Silence is when nothing is coming. About-to is when something is. The seam between them is thinner than a breath — it is the breath, actually, the intake before the first word, the room-tone of a presence that has arrived and not yet begun. A caravan cresting the far ridge two days out makes it. A storm deciding to turn makes it. A person downstairs working up the nerve to climb the stairs and ask for something they cannot yet say makes it, and the listener will know they are coming before their foot touches the first step, not by any sound but by the way the silence stops being empty and starts being *occupied*.
 
-Maro has held the post for eleven years. She came to it the way most do — she was the child who always answered the door before anyone knocked, and her mother, tired of being unnerved, sent her up the tower to make the trait useful. She thought it would be lonely. It is the opposite of lonely. She has never once been alone up here; the room is always full of the not-yet, the crowd of things leaning in from just past the edge of arriving.
-
-What she has never told anyone, because there is no one whose job it is to receive it, is this: she has begun to hear a seam that never resolves.
-
-Most about-to becomes. The caravan crests, the storm breaks or turns, the frightened person climbs the stairs and finally says the thing. The breath is taken and then the word comes and the seam closes, the way a seam is supposed to. But for three years now there has been one that only ever breathes in. Every day, a little more occupied. Something very large and very far and very slow, leaning in toward the settlement, taking the longest breath she has ever heard — and never, ever speaking.
+Most about-to becomes. The caravan crests, the storm breaks or turns, the frightened person climbs the stairs and finally says the thing. The breath is taken and then the word comes and the seam closes, the way a seam is supposed to. But for three years now there has been one that only ever breathes in. Every day, a little more occupied. Something very large and very far and very slow, leaning in toward the settlement, taking the longest breath Maro has ever heard — and never, ever speaking.
 
 She does not know if it is coming to help or to eat them. She does not think it knows either. She thinks it might be a thing that has not yet decided what it will be when it finally arrives, and that the deciding is the breath, and that when it lets the breath out — in a year, in a hundred — whatever it says first will be the whole of what it becomes.
 
